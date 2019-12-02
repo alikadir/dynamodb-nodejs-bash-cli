@@ -8,6 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Debug Node Program",
+      "runtimeArgs": ["--experimental-modules"],
       "program": "${workspaceFolder}/node-dynamodb/index.js",
       "skipFiles": ["<node_internals>/**"]
     }
