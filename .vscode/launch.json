@@ -5,11 +5,23 @@
   "version": "0.2.0",
   "configurations": [
     {
+      // this configuration need to global nodemon installation!!
       "type": "node",
       "request": "launch",
-      "name": "Debug Node Program",
+      "name": "Debug Nodemon Program",
+      "runtimeExecutable": "nodemon",
       "runtimeArgs": ["--experimental-modules"],
       "program": "${workspaceFolder}/node-dynamodb/index.js",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch via NPM",
+      "cwd": "${workspaceRoot}/node-dynamodb",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "debug"],
+      "port": 9229,
       "skipFiles": ["<node_internals>/**"]
     }
   ]

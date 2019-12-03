@@ -25,18 +25,25 @@ app.get('/users/:userName', async (req, res) => {
 
 app.get('/users', async (req, res) => {
     let data;
-    if (req.query.keys) { // multiple get 
+    if (req.query.keys) { // multiple key get 
         let keys = req.query.keys.split(',').map(item => ({ userName: item }));
         data = await documentClient.batchGet({ RequestItems: { [tableName]: { Keys: keys } } }).promise();
     }
-    else // single get
+    else if (req.query.name) { // contains filter
+        data = await documentClient.scan({
+            FilterExpression: "contains(#fullName, :pramName)",
+            ExpressionAttributeNames: { "#fullName": "name" },
+            ExpressionAttributeValues: { ":pramName": req.query.name }
+        }).promise();
+    }
+    else // get all
         data = await documentClient.scan().promise();
     res.send(data);
 });
 
 app.get('/users-ismale-:male-gt-:age', async (req, res) => {
     let data = await documentClient.scan({
-        FilterExpression: "isMale = :pramIsMale AND age > :pramAge",
+        FilterExpression: "isMale = :pramIsMale and age > :pramAge",
         ExpressionAttributeValues: { ":pramIsMale": (req.params.male.toLowerCase() == "true"), ":pramAge": parseInt(req.params.age) }
     }).promise();
     res.send(data);
@@ -57,19 +64,19 @@ app.put('/users/:userName', async (req, res) => {
     /*    
     #---- kayit guncellerken ----# 
     
-    # SET = varolan column'larin degerlerini degistirir 
+    # set = varolan column'larin degerlerini degistirir 
     # --update-expression 'SET age = :pramAge, isMale = :pramIsMale'
     
-    # ADD = hedeflenen kayda yeni column ve belirtilen value'ekler 
+    # add = hedeflenen kayda yeni column ve belirtilen value'ekler 
     # --update-expression 'ADD height = :pramHeight, culture = :pramCulture'
     
-    # REMOVE = hedeflenen kayitta bulunan column'lari siler
+    # remove = hedeflenen kayitta bulunan column'lari siler
     # --update-expression "REMOVE height, culture" 
     */
 
     let data = await documentClient.update({
         Key: { userName: req.params.userName },
-        UpdateExpression: "SET age = :pramAge, isMale = :pramIsMale",
+        UpdateExpression: "set age = :pramAge, isMale = :pramIsMale",
         ExpressionAttributeValues: { ":pramAge": req.body.age, ":pramIsMale": req.body.isMale }
     }).promise();
     res.send(data);
