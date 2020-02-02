@@ -1,25 +1,19 @@
-const AWS = require("aws-sdk");
+const AWS = require('aws-sdk');
 
 exports.handler = async event => {
-  const documentClient = new AWS.DynamoDB.DocumentClient();
+  const docClient = new AWS.DynamoDB.DocumentClient({
+    region: 'eu-central-1',
+    params: { TableName: process.env.TABLE_NAME }
+  });
+
   let data;
 
   if (event.get !== undefined) {
-    const params = {
-      TableName:  process.env.TABLE_NAME,
-      Key: {
-        userName: event.get.userName
-      }
-    };
-    data = await documentClient.get(params).promise();
+    data = await docClient.get({ Key: { userName: event.get.userName } }).promise();
   }
 
   if (event.put !== undefined) {
-    const params = {
-      TableName: process.env.TABLE_NAME,
-      Item: event.put
-    };
-    data = await documentClient.put(params).promise();
+    data = await docClient.put({ Item: event.put }).promise();
   }
 
   const response = {

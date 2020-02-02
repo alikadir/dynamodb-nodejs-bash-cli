@@ -49,14 +49,11 @@ aws dynamodb delete-item \
 --table-name users \
 --key '{"userName":{"S":"hilal"}}'
 
-// query yazma (filter eksik)
+# query yazma (filter eksik)
 aws dynamodb query \
 --table-name users \
 --key-condition-expression "userName = :pramUserName" \
 --expression-attribute-values '{":pramUserName":{"S":"alikadir"}}'
-
-
-
 
 
 // tablonun meta bilgisi icin 
