@@ -1,4 +1,4 @@
-# Query vs Scan
+# AWS DynamoDB Query vs Scan
 
 ## Query
 
