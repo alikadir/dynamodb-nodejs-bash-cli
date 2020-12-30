@@ -27,3 +27,4 @@ Hatta sorgu performansini iyilestirmek icin Index ler tanimlayabiliriz.
 http://techtraits.com/cloud/nosql/2012/06/28/Amazon-DynamoDB-Understanding-Query-and-Scan-operations.html
 
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html
+
